@@ -12,9 +12,9 @@ app.use("/home", homeRouter);
 
 
 async function startServer() {
-  await connectDB("School"); // Connect before starting server
+  await connectDB("papertrail"); // Connect before starting server
   const db = getDB();
-  await db.createCollection("teachers");
+  await db.createCollection("papers");
   app.listen(Port, () => {
     console.log(`Server running on ${Port}`);
   });

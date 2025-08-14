@@ -1,4 +1,3 @@
-import express from "express";
 import { ObjectId } from 'mongodb';
 import { getDB } from "../DB/connection.js";
 
@@ -16,7 +15,6 @@ export async function getAllPaper(req, res) {
         const tag = req.query.tags ? req.query.tags.split(",") : null;
         const search = req.query.search ? req.query.search.trim() : null;
 
-        // Build filter object
         let filter = {};
         if (tag) {
             filter.tags = { $in: tag };
