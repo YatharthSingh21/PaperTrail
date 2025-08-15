@@ -1,8 +1,126 @@
-.Nav{
-  display: flex;
+nav {
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 4px 6px rgba(1, 1, 1, 0.1); /* Subtle shadow at the bottom */
+    position: sticky; /* Sticks to the top when scrolling */
+    top: 0; /* Stick at the very top */
+    padding-bottom: 0.2%;
+    z-index: 1000; /* Ensures navbar stays above other content */
 }
 
-#logo{
-  height: 100px;
-  width: 100px;
+/* Inner flex container for logo, search, buttons */
+.Nav {
+    display: flex;
+    justify-content: space-between; /* Spaces out children (logo, search, buttons) */
+    align-items: center; /* Vertically centers all items */
+    width: 100%;
+    margin: 0 auto; /* Centers navbar horizontally */
+}
+
+/* Logo styling */
+#logo {
+    height: 90px;       /* Fixed height (adjust as needed) */
+    width: auto;        /* Maintains aspect ratio */
+    padding-left: 1.5%; /*To Put the logo not far left*/
+    cursor: pointer;    /* Shows it's clickable */
+    transition: transform 0.2s ease; /* Smooth hover animation */
+}
+
+#logo:hover {
+    transform: scale(1.04); /* Slightly enlarges on hover */
+}
+
+/*Search Bar Styling*/
+#search {
+    flex: 1; /* Takes up available space between logo and buttons */
+    max-width: 500px; /* Prevents search bar from growing too wide */
+
+    margin: 0 2rem; /* Space on sides */
+    display: flex;
+}
+
+#search input {
+    flex-grow: 1; /* Expands to fill container */
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 24px 0 0 24px; /* Rounded left side */
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); /* Inner shadow */
+}
+
+/* Search Button */
+#search button {
+    padding: 0 1.1rem;
+    background-color: #030303;
+    color: rgb(242, 237, 237);
+    border: none;
+    border-radius: 0 24px 24px 0; /* Rounded right side */
+    cursor: pointer;
+    font-size: 1.05rem;
+    transition: background-color 0.3s ease;
+}
+
+#search button:hover {
+    background-color: #262626;
+    transform: translateY(-1px); 
+}
+
+/*-------------------------------------------------------------------------*/
+
+/* Buttons Container */
+.buttons {
+    display: flex;
+    gap: 2rem;         
+    padding-right: 2.5%;
+}
+
+#WriteButton, #ProfileButton {
+    padding: 0.6rem 1.5rem;
+    border-radius: 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 500;
+}
+
+#WriteButton {
+    background-color: #000000;
+    color: white;
+}
+
+#WriteButton:hover {
+    background-color: #222222;
+    transform: translateY(-1px); 
+}
+
+/* Profile Button*/
+#ProfileButton {
+    background-color: #f5f5f5;
+    border-radius: 50%; /* Perfect circle */
+    width: 48px;        /* Slightly larger container */
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1),  /* Inner border */
+                0 2px 6px rgba(0,0,0,0.1);  /* Outer shadow */
+}
+
+#ProfileButton:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05); /* Subtle grow effect */
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3), 
+               0 3px 8px rgba(0,0,0,0.15);
+}
+
+#ProfileButton .fa-user-circle {
+    font-size: 32px;    /* Increased from default */
+    color: #555;
+    margin-top: 2px;     /* Optical centering adjustment */
 }

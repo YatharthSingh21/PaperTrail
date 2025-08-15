@@ -1,6 +1,6 @@
 import './NavBar.css';
-
-const logo = "https://tse1.mm.bing.net/th/id/OIP.8-irLa_PHWf6F8pQ3l13ewHaFj?pid=Api";
+import logo from "../assets/logo.png";
+import '@fortawesome/fontawesome-free/css/all.css';
 
 function NavBar() {
     return (
@@ -12,8 +12,15 @@ function NavBar() {
                     <button type="submit">Search</button>
                 </form>
 
-                <button id="WriteButton">Write</button>
-                <button id="ProfileButton">Profile</button>
+                <div className="buttons">
+                    <button id="WriteButton" className="write-combo">
+                    <i className="fas fa-feather-alt"></i>
+                    <span>Publish</span>  {/* For writing platforms */}
+                    </button>
+                    <button id="ProfileButton">
+                        <i className="fas fa-user-circle"></i>
+                    </button>
+                </div>
             </div>
         </nav>
     );
