@@ -15,6 +15,8 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
+  tls: true,  // 👈 force TLS
+  ssl: true   // 👈 double assurance
 });
 
 let db; // Will hold the connected DB instance

@@ -69,6 +69,7 @@ export async function postPaper(req, res) {
 
         const newPaper = {
             title: body.title,
+            subTitle: body.subTitle,
             content: body.content,
             author: body.author,
             tags: tagsArray,

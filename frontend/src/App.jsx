@@ -1,12 +1,14 @@
-import { useState } from 'react'
-import NavBar from "./components/navbar.jsx";
-import Feed from "./components/feed.jsx";
+import { Route, Routes } from "react-router"
+import HomePage from "./pages/Home.jsx";
+import PublishPage from "./pages/Publish.jsx";
 
 function App() {
   return (
     <>
-      <NavBar />
-      <Feed />
+      <Routes>
+        <Route path="/" element= {<HomePage />} />
+        <Route path="/publish" element= {<PublishPage />} />
+      </Routes>
     </>
   )
 }
