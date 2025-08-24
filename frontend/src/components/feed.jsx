@@ -1,20 +1,23 @@
-import "./Feed.css"
+import "./Feed.css";
+import { Link } from "react-router";
 
-function Feed({ title, subtitle, createdAt }) {
+function Feed({post}) {
   return (
-    <div className="feed-card">
-      <div className="feed-content">
-        <h2 className="feed-title">{title}</h2>
-        <p className="feed-subtitle">{subtitle}</p>
-        <span className="feed-date">
-          {new Date(createdAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
-        </span>
+    <Link to={`/${post._id}`} className="feed-link">
+      <div className="feed-card">
+        <div className="feed-content">
+          <h2 className="feed-title">{post.title}</h2>
+          <p className="feed-subtitle">{post.subtitle}</p>
+          <span className="feed-date">
+            {new Date(post.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

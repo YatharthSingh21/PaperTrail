@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router";
 import '../components/navbar.css';
 import logo from "../assets/logo.png";
 import './publish.css';
@@ -8,7 +9,7 @@ function NavBar() {
     return (
         <nav>
             <div className="Nav">
-                <img id="logo" src={logo}/>
+                <Link to="/"><img id="logo" src={logo}/></Link>
             </div>
         </nav>
     );

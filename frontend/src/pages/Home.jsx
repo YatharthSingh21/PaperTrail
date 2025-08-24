@@ -26,12 +26,7 @@ function Homepage() {
       <NavBar />
       <div className="Feeds">
         {posts.map((post) => (
-          <Feed 
-            key={post._id} 
-            title={post.title} 
-            subtitle={post.subtitle} 
-            createdAt={post.createdAt} 
-          />
+        <Feed key={post._id} post={post} />
         ))}
       </div>
     </>
