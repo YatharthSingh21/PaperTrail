@@ -1,11 +1,62 @@
 import axios from "axios";
 import { useState } from "react";
+import '../components/navbar.css';
+import logo from "../assets/logo.png";
+import './publish.css';
 
-function Publish({ currentUser }) {   // <- you’ll pass the logged-in user as prop or from context
+function NavBar() {
+    return (
+        <nav>
+            <div className="Nav">
+                <img id="logo" src={logo}/>
+            </div>
+        </nav>
+    );
+}
+
+function TagDropdown({ tags, setTags }) {
+  const availableTags = ["Technology", "Science", "AI", "Crypto", "Education", "Philosophy", "Statistics", "Spirituality", "Mathematics", "Gaming"
+    ,"Sports", "Politics", "Food", "Lifestyle", "Fashion", "Television", "Others"
+  ];
+  const [open, setOpen] = useState(false);
+
+  function toggleTag(tag) {
+    if (tags.includes(tag)) {
+      setTags(tags.filter((t) => t !== tag));
+    } else {
+      setTags([...tags, tag]);
+    }
+  }
+
+  return (
+    <div className="tag-dropdown">
+      <div className="dropdown-header" onClick={() => setOpen(!open)}>
+        {tags.length > 0 ? tags.join(", ") : "Select Tags"}
+        <span className="arrow">{open ? "▲" : "▼"}</span>
+      </div>
+      {open && (
+        <div className="dropdown-menu">
+          {availableTags.map((tag) => (
+            <label key={tag} className="dropdown-item">
+              <input
+                type="checkbox"
+                checked={tags.includes(tag)}
+                onChange={() => toggleTag(tag)}
+              />
+              {tag}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Publish({ currentUser }) {
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,12 +66,17 @@ function Publish({ currentUser }) {   // <- you’ll pass the logged-in user as 
         title: title,
         subTitle: subTitle,
         content: content,
-        author: "Yatharth", //For now be default
-        // author: currentUser.username,
-        tags: [],
+        author: "Yatharth", // or currentUser.username
+        tags: tags,
       });
 
       console.log("Paper posted:", post.data);
+
+      // reset form after submit
+      setTitle("");
+      setSubTitle("");
+      setContent("");
+      setTags([]);
     } catch (err) {
       console.error("Error posting:", err.response?.data || err.message);
     }
@@ -28,35 +84,39 @@ function Publish({ currentUser }) {   // <- you’ll pass the logged-in user as 
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        {/* <input 
-          type="text" 
-          name="tags" 
-          placeholder="tags"
-          value={tags}
-          onChange={(e) => setTitle(e.target.value)}
-        />         */}
-        <input 
-          type="text" 
-          name="title" 
+      <NavBar />
+      <form className="publish-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="title"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          className="title-input"
         />
-        <input 
-          type="text" 
-          name="subTitle" 
+
+        <TagDropdown tags={tags} setTags={setTags} />
+
+        <input
+          type="text"
+          name="subTitle"
           placeholder="Sub-Title"
           value={subTitle}
           onChange={(e) => setSubTitle(e.target.value)}
+          className="subtitle-input"
         />
+
         <textarea
           name="content"
-          placeholder="Body"
+          placeholder="Write your story..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          className="content-input"
         />
-        <button type="submit">Post</button>
+
+        <button type="submit" className="publish-btn">
+          Publish
+        </button>
       </form>
     </>
   );
