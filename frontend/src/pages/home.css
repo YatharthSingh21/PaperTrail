@@ -1,0 +1,17 @@
+.sideBar-Feed-Container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.Feeds {
+  flex: 4; /* take 75% of space */
+  padding: 20px;
+}
+
+.sidebar-Container {
+  flex: 2; /* take 25% of space */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 1px solid #ddd;
+}

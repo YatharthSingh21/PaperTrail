@@ -17,7 +17,7 @@ function NavBar() {
 
 function TagDropdown({ tags, setTags }) {
   const availableTags = ["Technology", "Science", "AI", "Crypto", "Education", "Philosophy", "Statistics", "Spirituality", "Mathematics", "Gaming"
-    ,"Sports", "Politics", "Food", "Lifestyle", "Fashion", "Television", "Others"
+    ,"Sports", "Politics", "Food", "Lifestyle", "Fashion", "Television", "Art", "Literature"
   ];
   const [open, setOpen] = useState(false);
 

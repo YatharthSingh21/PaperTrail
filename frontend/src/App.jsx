@@ -4,7 +4,6 @@ import PublishPage from "./pages/Publish.jsx";
 import PostPage from "./pages/Postpage.jsx";
 
 function App() {
-  console.log("APp ran!");
   return (
     <>
       <Routes>
