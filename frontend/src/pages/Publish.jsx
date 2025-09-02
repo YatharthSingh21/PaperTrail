@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import '../components/navbar.css';
 import logo from "../assets/logo.png";
 import './publish.css';
@@ -59,6 +59,7 @@ function Publish({ currentUser }) {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
 
+  const navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -67,17 +68,19 @@ function Publish({ currentUser }) {
         title: title,
         subTitle: subTitle,
         content: content,
-        author: "Yatharth", // or currentUser.username
+        author: currentUser?.name || "Anonymous", // or currentUser.username
         tags: tags,
       });
 
       console.log("Paper posted:", post.data);
 
+      navigate("/")
       // reset form after submit
       setTitle("");
       setSubTitle("");
       setContent("");
       setTags([]);
+
     } catch (err) {
       console.error("Error posting:", err.response?.data || err.message);
     }

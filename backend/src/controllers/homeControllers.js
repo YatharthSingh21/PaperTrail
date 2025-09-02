@@ -1,5 +1,57 @@
 import { ObjectId } from 'mongodb';
 import { getDB } from "../DB/connection.js";
+import bcrypt from "bcrypt";
+
+export async function loginUser(req, res) {
+  try {
+    const { email, password } = req.body;
+    const db = getDB();
+
+    const user = await db.collection("users").findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    res.json({ message: "Login successful", user: { name: user.name, bio: user.bio, email: user.email } });
+  } catch (error) {
+    res.status(500).json({ message: "Error logging in", error: error.message });
+  }
+}
+
+export async function postUser(req, res) {
+  try {
+    const db = getDB();
+    const { name, bio, email, password } = req.body;
+
+    // Check if user already exists
+    const existing = await db.collection("users").findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 = salt rounds
+
+    const newUser = {
+      name,
+      bio,
+      email,
+      password: hashedPassword,
+    };
+
+    await db.collection("users").insertOne(newUser);
+
+    res.status(201).json({ message: "User added successfully", user: { name, bio, email } });
+  } catch (error) {
+    res.status(500).json({ message: "Error posting user", error: error.message });
+  }
+}
 
 export async function getAllPaper(req, res) {
     try {

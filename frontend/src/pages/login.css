@@ -1,0 +1,113 @@
+/* Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #fafafa;
+  font-family: "Georgia", serif;
+}
+
+/* Shared styles for both forms */
+.login-form,
+.signup-form {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Heading */
+.login-form h2,
+.signup-form h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  color: #222;
+}
+
+/* Labels */
+label {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: -0.3rem;
+}
+
+/* Inputs */
+input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1a8917; /* Medium’s green */
+  box-shadow: 0 0 0 3px rgba(26, 137, 23, 0.15);
+}
+
+/* Main buttons */
+button[type="submit"] {
+  background: #1a8917;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+button[type="submit"]:hover {
+  background: #166c13;
+}
+
+/* Toggle links (login <-> signup) */
+.link-btn {
+  background: none;
+  border: none;
+  color: #1a8917;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.3rem;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+/* Paragraph below button */
+p {
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Bio textarea */
+textarea {
+  min-height: 80px;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical; /* lets user expand if needed */
+  line-height: 1.4;
+  transition: border 0.2s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #1a8917;
+  box-shadow: 0 0 0 3px rgba(26, 137, 23, 0.15);
+}

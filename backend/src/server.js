@@ -17,6 +17,7 @@ async function startServer() {
   await connectDB("papertrail"); // Connect before starting server
   const db = getDB();
   await db.createCollection("papers");
+  await db.createCollection("users");
   app.listen(Port, () => {
     console.log(`Server running on ${Port}`);
   });
