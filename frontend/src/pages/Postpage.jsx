@@ -10,7 +10,7 @@ function PostPage() {
   const { id } = useParams();
 
   useEffect(() => {
-    const fetchNote = async () => {
+    const fetchPost = async () => {
       try {
         const res = await axios.get(`http://localhost:3001/home/${id}`);
         setPost(res.data);
@@ -20,7 +20,7 @@ function PostPage() {
       }
     };
 
-    fetchNote();
+    fetchPost();
   }, [id, navigate]);
 
   return (

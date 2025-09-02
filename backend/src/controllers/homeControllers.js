@@ -2,6 +2,28 @@ import { ObjectId } from 'mongodb';
 import { getDB } from "../DB/connection.js";
 import bcrypt from "bcrypt";
 
+export async function getUser(req, res){
+    try {
+        const id = req.params.id;
+        const db = getDB();
+
+        // Validate ID
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid User ID" });
+        }
+
+        const user = await db.collection("users").findOne({ _id: new ObjectId(id) });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(user);
+
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching User", error: error.message });
+    }
+}
+
 export async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
@@ -18,7 +40,7 @@ export async function loginUser(req, res) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    res.json({ message: "Login successful", user: { name: user.name, bio: user.bio, email: user.email } });
+    res.json({ message: "Login successful", user: { _id: user._id, name: user.name, bio: user.bio, email: user.email } });
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error: error.message });
   }
@@ -36,7 +58,7 @@ export async function postUser(req, res) {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 = salt rounds
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = {
       name,
@@ -45,11 +67,21 @@ export async function postUser(req, res) {
       password: hashedPassword,
     };
 
-    await db.collection("users").insertOne(newUser);
+    const result = await db.collection("users").insertOne(newUser);
 
-    res.status(201).json({ message: "User added successfully", user: { name, bio, email } });
+    res.status(201).json({
+      message: "User added successfully",
+      user: {
+        _id: result.insertedId,   // 👈 important
+        name,
+        bio,
+        email,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error posting user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error posting user", error: error.message });
   }
 }
 
@@ -59,7 +91,7 @@ export async function getAllPaper(req, res) {
 
         //For Pagination
         const page = parseInt(req.query.page) || 1;
-        const limit = 6;
+        const limit = 8;
         const sortBy = ["glide", "fall", "createdAt", "title"].includes(req.query.sortBy) ? req.query.sortBy : "glide";
         const order = parseInt(req.query.order) || -1;
 

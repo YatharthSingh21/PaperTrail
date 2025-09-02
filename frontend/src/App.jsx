@@ -5,6 +5,7 @@ import HomePage from "./pages/Home.jsx";
 import PublishPage from "./pages/Publish.jsx";
 import PostPage from "./pages/Postpage.jsx";
 import LoginPage from "./pages/login.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -21,7 +22,8 @@ function App() {
       <Routes>
         <Route path="/" element= {<HomePage />} />
         <Route path="/publish" element={<PublishPage currentUser={currentUser} />} />
-        <Route path="/:id" element= {<PostPage />} />
+        <Route path="/profile/:id" element= {<Profile />} /> {/*Never write just this "/:id", otherwise it would treat other routes as /something here*/}
+        <Route path="/post/:id" element= {<PostPage />} />
         <Route path="/login" element= {<LoginPage />} />
       </Routes>
     </>

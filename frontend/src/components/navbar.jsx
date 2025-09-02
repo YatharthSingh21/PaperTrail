@@ -5,13 +5,21 @@ import { Link, useNavigate } from 'react-router';
 
 function NavBar() {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("user")); // ✅ check login state
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    function handlePublishClick() {
+    function handlePublishCheck() {
         if (user) {
-            navigate("/publish"); // logged in → go to publish
+            navigate("/publish");
         } else {
-            navigate("/login");   // not logged in → go to login
+            navigate("/login"); 
+        }
+    }
+
+    function handleProfileCheck() {
+        if (user) {
+            navigate(`/profile/${user._id}`);
+        } else {
+            navigate("/login");
         }
     }
 
@@ -29,13 +37,13 @@ function NavBar() {
                     <button 
                         id="WriteButton" 
                         className="write-combo" 
-                        onClick={handlePublishClick}
+                        onClick={handlePublishCheck}
                     >
                         <i className="fas fa-feather-alt"></i>
                         <span>Publish</span>
                     </button>
 
-                    <button id="ProfileButton">
+                    <button id="ProfileButton" onClick={handleProfileCheck}>
                         <i className="fas fa-user-circle"></i>
                     </button>
                 </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 function Feed({post}) {
   return (
-    <Link to={`/${post._id}`} className="feed-link">
+    <Link to={`/post/${post._id}`} className="feed-link">
       <div className="feed-card">
         <div className="feed-content">
           <h2 className="feed-title">{post.title}</h2>
