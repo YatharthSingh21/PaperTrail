@@ -1,45 +1,103 @@
 /* Profile.css */
 
 .profile-container {
-  max-width: 680px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  font-family: "Georgia", serif;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .profile-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .profile-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #242424;
-}
-
-.profile-header .email {
-  font-size: 1rem;
-  color: #6e6e6e;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid #e6e6e6;
-  padding-bottom: 0.25rem;
+  margin-top: 12px;
+  font-size: 2rem;
   color: #333;
 }
 
-.profile-bio {
-  font-size: 1.1rem;
-  line-height: 1.6;
+.profile-pic {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #0077ff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.section-title {
+  font-size: 1.3rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
   color: #444;
-  margin-top: 0.75rem;
+  border-bottom: 2px solid #0077ff;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.profile-bio {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #555;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  min-height: 50px;
+}
+
+/* Scoped button styles (only for profile page) */
+.profile-container button {
+  background: #0077ff;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s ease-in-out;
+}
+
+.profile-container button:hover {
+  background: #005fcc;
+}
+
+/* Edit form */
+.profile-container .edit-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-container .edit-form label {
+  font-weight: 600;
+  color: #333;
+}
+
+.profile-container .edit-form input,
+.profile-container .edit-form textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.profile-container .edit-form input:focus,
+.profile-container .edit-form textarea:focus {
+  border: 1px solid #0077ff;
+}
+
+.profile-container .edit-form textarea {
+  min-height: 80px;
+  resize: vertical;
 }

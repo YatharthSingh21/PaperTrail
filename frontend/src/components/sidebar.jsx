@@ -1,4 +1,6 @@
+
 function Sidebar({ onTagSelect, selectedTag }) {
+
   const availableTags = [
     "Technology", "Science", "AI", "Crypto", "Education",
     "Philosophy", "Statistics", "Spirituality", "Mathematics",

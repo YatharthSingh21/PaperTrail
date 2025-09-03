@@ -4,62 +4,52 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 
 function Login() {
-  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
     email: "",
     password: "",
+    profilePic: "",
   });
-  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsLogin((prev) => !prev);
-    setMessage(""); // clear messages when switching
+    setFormData({ name: "", bio: "", email: "", password: "", profilePic: "" }); // reset form
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const endpoint = isLogin
-        ? "http://localhost:3001/home/user/login"
-        : "http://localhost:3001/home/user/signup";
-
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setMessage(data.message || "Something went wrong");
-        return;
-      }
-
-      setMessage(data.message);
-
       if (isLogin) {
-        // save user info locally (or JWT if you add it later)
-        console.log("Logged in user:", data.user);
+        // login API
+        const res = await axios.post("http://localhost:3001/home/user/login", {
+          email: formData.email,
+          password: formData.password,
+        });
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate("/");
       } else {
-        console.log("New user created:", data.user);
+        // signup API
+        const res = await axios.post("http://localhost:3001/home/user/signup", {
+          name: formData.name,
+          bio: formData.bio,
+          email: formData.email,
+          password: formData.password,
+          profilePic: formData.profilePic, // <-- send profilePic
+        });
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate("/");
       }
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      setMessage("Server error, please try again.");
+    } catch (err) {
+      console.error("Error:", err.response?.data || err.message);
     }
   };
 
@@ -68,23 +58,22 @@ function Login() {
       {isLogin ? (
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Login</h2>
-
           <label>Email:</label>
           <input
             type="email"
             name="email"
-            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
+            placeholder="Enter your email"
           />
 
           <label>Password:</label>
           <input
             type="password"
             name="password"
-            placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
+            placeholder="Enter your password"
           />
 
           <button type="submit">Login</button>
@@ -103,35 +92,44 @@ function Login() {
           <input
             type="text"
             name="name"
-            placeholder="MK Gandhi"
             value={formData.name}
             onChange={handleChange}
+            placeholder="MK Gandhi"
           />
 
           <label>Bio:</label>
           <textarea
             name="bio"
-            placeholder="I am 27 and a fashion designer."
             value={formData.bio}
             onChange={handleChange}
-          ></textarea>
+            placeholder="I am 27 and a fashion designer."
+          />
 
           <label>Email:</label>
           <input
             type="email"
             name="email"
-            placeholder="madanlal@blah.com"
             value={formData.email}
             onChange={handleChange}
+            placeholder="madanlal@blah.com"
           />
 
           <label>Password:</label>
           <input
             type="password"
             name="password"
-            placeholder="Pls don't choose 1234."
             value={formData.password}
             onChange={handleChange}
+            placeholder="Pls don't choose 1234."
+          />
+
+          <label>Profile Picture URL:</label>
+          <input
+            type="text"
+            name="profilePic"
+            value={formData.profilePic}
+            onChange={handleChange}
+            placeholder="https://example.com/profile.jpg"
           />
 
           <button type="submit">Sign Up</button>
@@ -143,7 +141,6 @@ function Login() {
           </p>
         </form>
       )}
-      {message && <p className="status-message">{message}</p>}
     </div>
   );
 }

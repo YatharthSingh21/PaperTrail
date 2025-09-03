@@ -2,6 +2,49 @@ import { ObjectId } from 'mongodb';
 import { getDB } from "../DB/connection.js";
 import bcrypt from "bcrypt";
 
+export async function updateProfile(req, res) {
+  try {
+    const { id } = req.params; // profile being updated
+    const { name, bio, profilePic, loggedInUserId } = req.body;
+    const db = getDB();
+
+    // Check ID validity
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    // Check ownership (only allow updating own profile)
+    if (id !== loggedInUserId) {
+      return res.status(403).json({ message: "You can only update your own profile" });
+    }
+
+    // Build update object dynamically
+    const updateFields = {};
+    if (name !== undefined) updateFields.name = name;
+    if (bio !== undefined) updateFields.bio = bio;
+    if (profilePic !== undefined) updateFields.profilePic = profilePic;
+
+    const result = await db
+      .collection("users")
+      .findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: updateFields },
+        { returnDocument: "after" }
+      );
+
+    if (!result.value) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: result.value,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating profile", error: error.message });
+  }
+}
+
 export async function getUser(req, res){
     try {
         const id = req.params.id;
@@ -49,7 +92,7 @@ export async function loginUser(req, res) {
 export async function postUser(req, res) {
   try {
     const db = getDB();
-    const { name, bio, email, password } = req.body;
+    const { name, bio, email, password, profilePic } = req.body;
 
     // Check if user already exists
     const existing = await db.collection("users").findOne({ email });
@@ -60,11 +103,16 @@ export async function postUser(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Use default if no profilePic provided
+    const finalProfilePic =
+      profilePic || "https://tse4.mm.bing.net/th/id/OIP.PnA78VPdcpzB-eu8gNPy7wHaJt?pid=Api";
+
     const newUser = {
       name,
       bio,
       email,
       password: hashedPassword,
+      profilePic: finalProfilePic,
     };
 
     const result = await db.collection("users").insertOne(newUser);
@@ -72,10 +120,11 @@ export async function postUser(req, res) {
     res.status(201).json({
       message: "User added successfully",
       user: {
-        _id: result.insertedId,   // 👈 important
+        _id: result.insertedId,
         name,
         bio,
         email,
+        profilePic: finalProfilePic,
       },
     });
   } catch (error) {
@@ -134,7 +183,6 @@ export async function getAllPaper(req, res) {
     }
 }
 
-
 export async function postPaper(req, res) {
     try {
         const body = req.body;
@@ -170,7 +218,6 @@ export async function postPaper(req, res) {
         res.status(500).json({ message: "Error posting paper", error: error.message });
     }
 }
-
 
 export async function getPaperByID(req, res) {
     try {
