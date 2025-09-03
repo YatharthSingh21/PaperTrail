@@ -7,6 +7,12 @@ function NavBar() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
 
+    function handleLogout() {
+        localStorage.removeItem("user");  // clear saved user
+        navigate("/login");               // redirect to login page
+        window.location.reload();         // refresh state (optional)
+    }
+
     function handlePublishCheck() {
         if (user) {
             navigate("/publish");
@@ -26,13 +32,16 @@ function NavBar() {
     return (
         <nav>
             <div className="Nav">
-                <Link to="/"><img id="logo" src={logo} /></Link>
+                {/* Logo */}
+                <Link to="/"><img id="logo" src={logo} alt="Logo" /></Link>
                 
+                {/* Search */}
                 <form id="search">
                     <input type="text" placeholder="Search this!" />
                     <button type="submit">Search</button>
                 </form>
 
+                {/* Buttons Section */}
                 <div className="buttons">
                     <button 
                         id="WriteButton" 
@@ -43,9 +52,23 @@ function NavBar() {
                         <span>Publish</span>
                     </button>
 
-                    <button id="ProfileButton" onClick={handleProfileCheck}>
-                        <i className="fas fa-user-circle"></i>
-                    </button>
+                    {user ? (
+                        <>
+                            <button id="ProfileButton" onClick={handleProfileCheck}>
+                                <i className="fas fa-user-circle"></i>
+                            </button>
+                            <button id="LogoutButton" onClick={handleLogout}>
+                                <i className="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </>
+                    ) : (
+                        <button 
+                            id="LoginButton" 
+                            onClick={() => navigate("/login")}
+                        >
+                            <i className="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    )}
                 </div>
             </div>
         </nav>

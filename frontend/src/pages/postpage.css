@@ -74,3 +74,60 @@
   background-color: #e0e0e0;
 }
 
+/* Floating container */
+.glide-floating {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.4); /* semi-transparent background */
+  padding: 8px 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  backdrop-filter: blur(6px); /* subtle frosted glass effect */
+}
+
+/* Button */
+.glide-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.glide-button:hover {
+  background: #111;
+  transform: translateY(-2px);
+}
+
+.glide-button.active {
+  background: #333;
+}
+
+/* Paper plane */
+.plane-icon {
+  font-size: 16px;
+  transform: rotate(-20deg);
+  transition: transform 0.3s ease;
+}
+
+.glide-button:hover .plane-icon {
+  transform: rotate(-20deg) translateX(3px); /* flying effect */
+}
+
+/* Count */
+.glide-count {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}

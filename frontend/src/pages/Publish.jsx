@@ -65,11 +65,14 @@ function Publish({ currentUser }) {
 
     try {
       const post = await axios.post("http://localhost:3001/home/", {
-        title: title,
-        subTitle: subTitle,
-        content: content,
-        author: currentUser?.name || "Anonymous", // or currentUser.username
-        tags: tags,
+        title,
+        subTitle,
+        content,
+        author: {
+          _id: currentUser?._id,
+          name: currentUser?.name
+        },
+        tags,
       });
 
       console.log("Paper posted:", post.data);

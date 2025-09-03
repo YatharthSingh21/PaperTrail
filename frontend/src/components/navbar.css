@@ -124,3 +124,21 @@ nav {
     color: #555;
     margin-top: 2px;     /* Optical centering adjustment */
 }
+
+/* Logout with red hover */
+#LogoutButton {
+    padding: 0.3rem 0.8rem;   /* reduce vertical + horizontal padding */
+    font-size: 1rem;        /* smaller text */
+    background-color: #030303;
+    color: rgb(242, 237, 237);
+    border: none;
+    border-radius: 0 16px 16px 0; /* slightly smaller rounding */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+#LogoutButton:hover {
+    background-color: #680000;
+    transform: translateY(-1px); 
+}

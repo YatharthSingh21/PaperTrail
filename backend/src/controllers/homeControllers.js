@@ -2,6 +2,52 @@ import { ObjectId } from 'mongodb';
 import { getDB } from "../DB/connection.js";
 import bcrypt from "bcrypt";
 
+export async function toggleGlide(req, res) {
+  try {
+    const db = getDB();
+    const { id } = req.params; // post ID
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const paper = await db.collection("papers").findOne({ _id: new ObjectId(id) });
+    if (!paper) {
+      return res.status(404).json({ message: "Paper not found" });
+    }
+
+    let updateQuery;
+
+    if (paper.glideUsers.includes(userId)) {
+      // User already glided → unglide
+      updateQuery = {
+        $inc: { glide: -1 },
+        $pull: { glideUsers: userId },
+      };
+    } else {
+      // User hasn't glided yet → glide
+      updateQuery = {
+        $inc: { glide: 1 },
+        $addToSet: { glideUsers: userId },
+      };
+    }
+
+    const updated = await db
+      .collection("papers")
+      .findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        updateQuery,
+        { returnDocument: "after" }
+      );
+
+    res.json({ message: "Glide updated", paper: updated });
+  } catch (error) {
+    console.error("Error toggling glide:", error);
+    res.status(500).json({ message: "Error toggling glide", error: error.message });
+  }
+}
+
 export async function updateProfile(req, res) {
   try {
     const { id } = req.params; // profile being updated
@@ -184,39 +230,55 @@ export async function getAllPaper(req, res) {
 }
 
 export async function postPaper(req, res) {
-    try {
-        const body = req.body;
-        const db = getDB();
+  try {
+    const body = req.body;
+    const db = getDB();
 
-        if (!body.title || !body.content || !body.author) {
-            return res.status(400).json({ message: "Title, content, and author are required" });
-        }
-
-        let tagsArray = [];
-        if (Array.isArray(body.tags)) {
-            tagsArray = body.tags;
-        } else if (typeof body.tags === "string" && body.tags.trim() !== "") {
-            tagsArray = body.tags.split(",").map(tag => tag.trim());
-        }
-
-        const newPaper = {
-            title: body.title,
-            subTitle: body.subTitle,
-            content: body.content,
-            author: body.author,
-            tags: tagsArray,
-            comments: [],
-            glide: 0,
-            fall: 0,
-            createdAt: new Date()
-        };
-
-        await db.collection("papers").insertOne(newPaper);
-
-        res.status(201).json({ message: "Paper posted successfully", paper: newPaper });
-    } catch (error) {
-        res.status(500).json({ message: "Error posting paper", error: error.message });
+    if (!body.title || !body.content || !body.author) {
+      return res
+        .status(400)
+        .json({ message: "Title, content, and author are required" });
     }
+
+    // Make sure author has both id and name
+    if (typeof body.author !== "object" || !body.author._id || !body.author.name) {
+      return res
+        .status(400)
+        .json({ message: "Author must include _id and name" });
+    }
+
+    let tagsArray = [];
+    if (Array.isArray(body.tags)) {
+      tagsArray = body.tags;
+    } else if (typeof body.tags === "string" && body.tags.trim() !== "") {
+      tagsArray = body.tags.split(",").map((tag) => tag.trim());
+    }
+
+    const newPaper = {
+      title: body.title,
+      subTitle: body.subTitle,
+      content: body.content,
+      author: {
+        _id: body.author._id,
+        name: body.author.name,
+      },
+      tags: tagsArray,
+      comments: [],
+      glide: 0,
+      glideUsers: [],
+      createdAt: new Date(),
+    };
+
+    await db.collection("papers").insertOne(newPaper);
+
+    res
+      .status(201)
+      .json({ message: "Paper posted successfully", paper: newPaper });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error posting paper", error: error.message });
+  }
 }
 
 export async function getPaperByID(req, res) {

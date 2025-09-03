@@ -8,7 +8,7 @@ function Feed({post}) {
         <div className="feed-content">
           <h2 className="feed-title">{post.title}</h2>
           <span className="feed-author">
-            -by {post.author}
+            -by {post.author.name}
           </span>          
           <p className="feed-subtitle">{post.subTitle}</p>
           <span className="feed-date">

@@ -1,10 +1,11 @@
 import express from "express";
-import { getAllPaper, postPaper, getPaperByID, loginUser, postUser, getUser, updateProfile } from "../controllers/homeControllers.js";
+import { getAllPaper, postPaper, getPaperByID, loginUser, postUser, getUser, updateProfile, toggleGlide } from "../controllers/homeControllers.js";
 
 const router = express.Router();
 
 router.get("/", getAllPaper);
 router.post("/", postPaper);
+router.put("/:id/glide", toggleGlide);
 router.get("/:id", getPaperByID);
 
 //Signup APIs
