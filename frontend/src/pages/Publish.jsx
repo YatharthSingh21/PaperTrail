@@ -64,7 +64,7 @@ function Publish({ currentUser }) {
     e.preventDefault();
 
     try {
-      const post = await axios.post("http://localhost:3001/home/", {
+      const post = await axios.post("http://localhost:3001/home", {
         title,
         subTitle,
         content,

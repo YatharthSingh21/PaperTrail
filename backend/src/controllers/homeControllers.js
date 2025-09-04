@@ -302,3 +302,34 @@ export async function getPaperByID(req, res) {
         res.status(500).json({ message: "Error fetching paper", error: error.message });
     }
 }
+
+export async function removePaper(req, res) {
+  try {
+    const { id } = req.params;  // paper id from URL
+    const { loggedInUserId } = req.body; // user trying to delete
+
+    if (!loggedInUserId) {
+      return res.status(401).json({ message: "Login required" });
+    }
+
+    const db = getDB();
+    const paper = await db.collection("papers").findOne({ _id: new ObjectId(id) });
+
+    if (!paper) {
+      return res.status(404).json({ message: "Paper not found" });
+    }
+
+    // ✅ Check ownership (paper.author could be object {_id, name})
+    if (paper.author._id.toString() !== loggedInUserId.toString()) {
+      return res.status(403).json({ message: "You are not allowed to delete this paper" });
+    }
+
+    await db.collection("papers").deleteOne({ _id: new ObjectId(id) });
+
+    return res.status(200).json({ message: "Paper deleted successfully" });
+
+  } catch (error) {
+    console.error("Error deleting paper:", error);
+    res.status(500).json({ message: "Error deleting paper", error: error.message });
+  }
+}

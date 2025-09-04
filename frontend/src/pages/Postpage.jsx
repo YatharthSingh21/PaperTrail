@@ -6,7 +6,7 @@ import NavBar from "../components/navbar.jsx";
 
 //For styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function PostPage() {
   const [post, setPost] = useState(null);
@@ -42,6 +42,19 @@ function PostPage() {
       setPost(res.data.paper); // update post with new glide count
     } catch (err) {
       console.error("Error toggling glide:", err);
+    }
+  }
+
+  async function handleDelete() {
+    if (!window.confirm("Are you sure you want to delete this paper?")) return;
+
+    try {
+      await axios.delete(`http://localhost:3001/home/${post._id}`, {
+        data: { loggedInUserId: currentUser._id },
+      });
+      navigate("/");
+    } catch (err) {
+      console.error("Error deleting paper:", err.response?.data || err.message);
     }
   }
 
@@ -96,6 +109,15 @@ function PostPage() {
             <span className="glide-count">{post.glide} Glides</span>
           </div>
 
+          {/* ✅ Delete Section (only author can see) */}
+          {currentUser && currentUser._id === post.author._id && (
+            <div className="delete-section">
+              <button className="delete-btn" onClick={handleDelete}>
+                <FontAwesomeIcon icon={faTrash} className="trash-icon" />
+                Delete Paper
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <p className="loading-text">Loading...</p>
