@@ -1,53 +1,58 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router";
 import './NavBar.css';
 import logo from "../assets/logo.png";
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Link, useNavigate } from 'react-router';
 
 function NavBar() {
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
     const user = JSON.parse(localStorage.getItem("user"));
 
     function handleLogout() {
-        localStorage.removeItem("user");  // clear saved user
-        navigate("/login");               // redirect to login page
-        window.location.reload();         // refresh state (optional)
+        localStorage.removeItem("user");
+        navigate("/login");
+        window.location.reload();
     }
 
     function handlePublishCheck() {
-        if (user) {
-            navigate("/publish");
-        } else {
-            navigate("/login"); 
-        }
+        if (user) navigate("/publish");
+        else navigate("/login"); 
     }
 
     function handleProfileCheck() {
-        if (user) {
-            navigate(`/profile/${user._id}`);
+        if (user) navigate(`/profile/${user._id}`);
+        else navigate("/login");
+    }
+
+    function handleSearch(e) {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`);
         } else {
-            navigate("/login");
+            navigate("/"); // reset to homepage if empty
         }
     }
 
     return (
         <nav>
             <div className="Nav">
-                {/* Logo */}
                 <Link to="/"><img id="logo" src={logo} alt="Logo" /></Link>
                 
                 {/* Search */}
-                <form id="search">
-                    <input type="text" placeholder="Search this!" />
+                <form id="search" onSubmit={handleSearch}>
+                    <input 
+                        type="text" 
+                        placeholder="Search this!" 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                     <button type="submit">Search</button>
                 </form>
 
-                {/* Buttons Section */}
+                {/* Buttons */}
                 <div className="buttons">
-                    <button 
-                        id="WriteButton" 
-                        className="write-combo" 
-                        onClick={handlePublishCheck}
-                    >
+                    <button id="WriteButton" className="write-combo" onClick={handlePublishCheck}>
                         <i className="fas fa-feather-alt"></i>
                         <span>Publish</span>
                     </button>
@@ -62,10 +67,7 @@ function NavBar() {
                             </button>
                         </>
                     ) : (
-                        <button 
-                            id="LoginButton" 
-                            onClick={() => navigate("/login")}
-                        >
+                        <button id="LoginButton" onClick={() => navigate("/login")}>
                             <i className="fas fa-sign-in-alt"></i> Login
                         </button>
                     )}

@@ -137,8 +137,34 @@ nav {
     transition: background-color 0.3s ease;
 }
 
-
 #LogoutButton:hover {
     background-color: #680000;
     transform: translateY(-1px); 
+}
+
+/* Login Button */
+#LoginButton {
+    padding: 0.6rem 1.5rem;
+    border-radius: 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+    background-color: #030303; /* dark theme */
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* space between icon and text */
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+#LoginButton i {
+    font-size: 1.1rem;
+}
+
+#LoginButton:hover {
+    background-color: #003f21;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }

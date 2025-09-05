@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from "react-router";
 import axios from "axios";
 import "./PostPage.css";
 import NavBar from "../components/navbar.jsx";
+import API_BASE_URL from "../config/config.js";
 
 //For styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,7 +19,7 @@ function PostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/home/${id}`);
+        const res = await axios.get(`${API_BASE_URL}/home/${id}`);
         setPost(res.data);
       } catch (error) {
         console.log("Error in fetching post", error);
@@ -36,7 +37,7 @@ function PostPage() {
     }
 
     try {
-      const res = await axios.put(`http://localhost:3001/home/${id}/glide`, {
+      const res = await axios.put(`${API_BASE_URL}/home/${id}/glide`, {
         userId: currentUser._id,
       });
       setPost(res.data.paper); // update post with new glide count
@@ -49,7 +50,7 @@ function PostPage() {
     if (!window.confirm("Are you sure you want to delete this paper?")) return;
 
     try {
-      await axios.delete(`http://localhost:3001/home/${post._id}`, {
+      await axios.delete(`${API_BASE_URL}/home/${post._id}`, {
         data: { loggedInUserId: currentUser._id },
       });
       navigate("/");

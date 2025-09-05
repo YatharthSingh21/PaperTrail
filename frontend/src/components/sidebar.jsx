@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import axios from "axios";
+import API_BASE_URL from "../config/config.js";
 import "./Sidebar.css";
 
 const topArticleImg =
@@ -20,7 +21,7 @@ function Sidebar({ onTagSelect, selectedTag }) {
     const fetchTopArticle = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3001/home?sortBy=glide&order=-1&limit=1"
+          `${API_BASE_URL}/home?sortBy=glide&order=-1&limit=1`
         );
         if (res.data.papers && res.data.papers.length > 0) {
           setTopArticle(res.data.papers[0]);

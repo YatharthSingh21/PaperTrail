@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router"; // ✅ for query params
 import NavBar from "../components/navbar.jsx";
 import Feed from "../components/feed.jsx";
 import axios from "axios";
 import Sidebar from "../components/sidebar.jsx";
+import API_BASE_URL from "../config/config.js";
 import "./Home.css";
 
 function Homepage() {
@@ -11,12 +13,20 @@ function Homepage() {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedTag, setSelectedTag] = useState(null);
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const search = queryParams.get("search"); // ✅ read ?search=term
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        let url = `http://localhost:3001/home?page=${page}&limit=6`;
+        let url = `${API_BASE_URL}/home?page=${page}&limit=6`;
+
         if (selectedTag) {
           url += `&tags=${selectedTag}`;
+        }
+        if (search) {
+          url += `&search=${encodeURIComponent(search)}`;
         }
 
         const res = await axios.get(url);
@@ -28,7 +38,7 @@ function Homepage() {
     };
 
     fetchPosts();
-  }, [page, selectedTag]);
+  }, [page, selectedTag, search]); // ✅ refetch when search or tag changes
 
   // Reset to page 1 if a new tag is selected
   const handleTagSelect = (tag) => {

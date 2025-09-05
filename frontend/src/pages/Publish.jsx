@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import '../components/navbar.css';
 import logo from "../assets/logo.png";
 import './publish.css';
+import API_BASE_URL from "../config/config.js";
 
 function NavBar() {
     return (
@@ -53,36 +54,43 @@ function TagDropdown({ tags, setTags }) {
   );
 }
 
-function Publish({ currentUser }) {
+function Publish() {
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
 
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!currentUser || !currentUser._id || !currentUser.name) {
+      alert("You must be logged in to publish a paper!");
+      return;
+    }
+
     try {
-      const post = await axios.post("http://localhost:3001/home", {
+      const post = await axios.post(`${API_BASE_URL}/home`, {
         title,
         subTitle,
         content,
         author: {
-          _id: currentUser?._id,
-          name: currentUser?.name
+          _id: currentUser._id,
+          name: currentUser.name
         },
         tags,
       });
 
       console.log("Paper posted:", post.data);
 
-      navigate("/")
-      // reset form after submit
+      // Reset form and navigate
       setTitle("");
       setSubTitle("");
       setContent("");
       setTags([]);
+      navigate("/");
 
     } catch (err) {
       console.error("Error posting:", err.response?.data || err.message);

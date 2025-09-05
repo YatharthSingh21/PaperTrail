@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import "./Profile.css";
 import NavBar from "../components/navbar.jsx";
+import API_BASE_URL from "../config/config.js";
 
 function Profile() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ function Profile() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await axios.get(`http://localhost:3001/home/user/${id}`);
+        const res = await axios.get(`${API_BASE_URL}/home/user/${id}`);
         setUser(res.data);
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -29,7 +30,7 @@ function Profile() {
   async function handleUpdate(e) {
     e.preventDefault();
     try {
-      const res = await axios.put(`http://localhost:3001/home/user/${id}`, {
+      const res = await axios.put(`${API_BASE_URL}/home/user/${id}`, {
         name: user.name,
         bio: user.bio,
         profilePic: user.profilePic,
@@ -72,7 +73,7 @@ function Profile() {
         {currentUser && currentUser._id === id && (
           <>
             <button onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? "Done!" : "Edit Profile"}
+              {isEditing ? "Cancel" : "Edit Profile"}
             </button>
 
             {isEditing && (

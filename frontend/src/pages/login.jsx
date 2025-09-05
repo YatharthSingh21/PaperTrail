@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./login.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import API_BASE_URL from "../config/config.js";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -30,7 +31,7 @@ function Login() {
     try {
       if (isLogin) {
         // login API
-        const res = await axios.post("http://localhost:3001/home/user/login", {
+        const res = await axios.post(`${API_BASE_URL}/home/user/login`, {
           email: formData.email,
           password: formData.password,
         });
@@ -38,7 +39,7 @@ function Login() {
         navigate("/");
       } else {
         // signup API
-        const res = await axios.post("http://localhost:3001/home/user/signup", {
+        const res = await axios.post(`${API_BASE_URL}/home/user/signup`, {
           name: formData.name,
           bio: formData.bio,
           email: formData.email,

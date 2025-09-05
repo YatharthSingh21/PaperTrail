@@ -21,7 +21,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element= {<HomePage />} />
-        <Route path="/publish" element={<PublishPage currentUser={currentUser} />} />
+        <Route path="/publish" element={<PublishPage />} />
         <Route path="/profile/:id" element= {<Profile />} /> {/*Never write just this "/:id", otherwise it would treat other routes as /something here*/}
         <Route path="/post/:id" element= {<PostPage />} />
         <Route path="/login" element= {<LoginPage />} />
