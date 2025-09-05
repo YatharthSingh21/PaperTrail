@@ -75,16 +75,18 @@ export async function updateProfile(req, res) {
       .findOneAndUpdate(
         { _id: new ObjectId(id) },
         { $set: updateFields },
-        { returnDocument: "after" }
+        { returnDocument: "after" } // for newer drivers
       );
 
-    if (!result.value) {
+    const updatedUser = result.value || await db.collection("users").findOne({ _id: new ObjectId(id) });
+
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
     res.json({
       message: "Profile updated successfully",
-      user: result.value,
+      user: updatedUser,
     });
   } catch (error) {
     res.status(500).json({ message: "Error updating profile", error: error.message });
@@ -186,7 +188,7 @@ export async function getAllPaper(req, res) {
 
         //For Pagination
         const page = parseInt(req.query.page) || 1;
-        const limit = 8;
+        const limit = 5;
         const sortBy = ["glide", "fall", "createdAt", "title"].includes(req.query.sortBy) ? req.query.sortBy : "glide";
         const order = parseInt(req.query.order) || -1;
 

@@ -30,10 +30,17 @@ function Profile() {
     e.preventDefault();
     try {
       const res = await axios.put(`http://localhost:3001/home/user/${id}`, {
-        ...user,
+        name: user.name,
+        bio: user.bio,
+        profilePic: user.profilePic,
         loggedInUserId: currentUser._id, // prove identity
       });
+
       setUser(res.data.user);
+
+      // 🔥 keep localStorage in sync
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       setIsEditing(false);
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -51,7 +58,7 @@ function Profile() {
           <h1>{user.name}</h1>
           <img
             src={user.profilePic}
-            alt={`${user.name}'s profile picture`}
+            alt={`${user.name}'s profile`}
             className="profile-pic"
           />
         </div>
@@ -61,7 +68,7 @@ function Profile() {
           <p className="profile-bio">{user.bio || "No bio yet."}</p>
         </div>
 
-        {/* Show edit option only if logged-in user owns this profile */}
+        {/* Only owner sees edit option */}
         {currentUser && currentUser._id === id && (
           <>
             <button onClick={() => setIsEditing(!isEditing)}>
@@ -70,27 +77,30 @@ function Profile() {
 
             {isEditing && (
               <form onSubmit={handleUpdate} className="edit-form">
-                <lable>Name</lable>
+                <label>Name</label>
                 <input
                   type="text"
-                  value={user.name}
+                  value={user.name || ""}
                   onChange={(e) => setUser({ ...user, name: e.target.value })}
                 />
-                <lable>Bio</lable>
+
+                <label>Bio</label>
                 <textarea
-                  value={user.bio}
+                  value={user.bio || ""}
                   onChange={(e) => setUser({ ...user, bio: e.target.value })}
                 />
-                <lable>Image URL</lable>
+
+                <label>Image URL</label>
                 <input
                   type="text"
-                  value={user.profilePic}
+                  value={user.profilePic || ""}
                   onChange={(e) =>
                     setUser({ ...user, profilePic: e.target.value })
                   }
                   placeholder="Profile picture URL"
                 />
-                {/* <button type="submit">Save</button> */}
+
+                <button type="submit">Save</button>
               </form>
             )}
           </>

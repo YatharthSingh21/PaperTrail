@@ -1,34 +1,91 @@
-/* Tag section container */
-.tag-section {
-  margin-top: 20px;
+/* Sidebar Container */
+.sidebar-Container {
+  width: 280px;
+  padding: 1.5rem;
+  background: #fff;
+  border-left: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: "Inter", sans-serif;
 }
 
+/* --- Top Article Section --- */
+.topArticle {
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.topArticle h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #333;
+}
+
+.topArticle img {
+  width: 50%;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+}
+
+.topArticle p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Author name */
+.topArticle p:last-child {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* --- Tags Section --- */
+.tag-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tag-section p {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0.3rem;
+}
+
+/* Tags Grid */
 .tags-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 buttons per row */
-  gap: 10px; /* space between buttons */
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
 }
 
-/* Tag buttons */
+/* Tag Button */
 .tag-btn {
-  padding: 8px 12px;
-  font-size: 14px;
-  text-align: center;
+  padding: 0.5rem 0.8rem;
+  border-radius: 20px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f8f8f8;
+  background: #f9f9f9;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  word-wrap: break-word; /* handle long words */
+  transition: all 0.2s ease;
 }
 
 .tag-btn:hover {
-  background-color: #eaeaea;
-  border-color: #bbb;
+  background: #f0f0f0;
+  border-color: #aaa;
 }
 
-.tag-btn:active {
-  background-color: #ddd;
-  transform: scale(0.98);
+.tag-btn.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
 }

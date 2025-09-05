@@ -1,40 +1,69 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import NavBar from "../components/navbar.jsx";
 import Feed from "../components/feed.jsx";
 import axios from "axios";
-import Sidebar from '../components/sidebar.jsx';
+import Sidebar from "../components/sidebar.jsx";
 import "./Home.css";
 
 function Homepage() {
   const [posts, setPosts] = useState([]);
-  
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedTag, setSelectedTag] = useState(null);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/home/");
-        setPosts(res.data.papers); //res.data.papers is an array that we want to display
+        let url = `http://localhost:3001/home?page=${page}&limit=6`;
+        if (selectedTag) {
+          url += `&tags=${selectedTag}`;
+        }
+
+        const res = await axios.get(url);
+        setPosts(res.data.papers);
+        setTotalPages(res.data.totalPages);
       } catch (error) {
         console.log("Error fetching posts", error);
       }
     };
 
     fetchPosts();
-  }, []);
+  }, [page, selectedTag]);
 
+  // Reset to page 1 if a new tag is selected
+  const handleTagSelect = (tag) => {
+    setSelectedTag(tag);
+    setPage(1);
+  };
 
   return (
-    <div className='home-Container'>
+    <div className="home-Container">
       <NavBar />
-      <div className='sideBar-Feed-Container'>
+      <div className="sideBar-Feed-Container">
         <div className="Feeds">
-          {posts.map((post) => (
-          <Feed key={post._id} post={post} />
-          ))}
+          {posts.length > 0 ? (
+            posts.map((post) => <Feed key={post._id} post={post} />)
+          ) : (
+            <p>No posts found</p>
+          )}
         </div>
-        <Sidebar />
+        <Sidebar onTagSelect={handleTagSelect} selectedTag={selectedTag} />
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="pagination">
+        <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+          Previous
+        </button>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <button disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
+          Next
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
 export default Homepage;
