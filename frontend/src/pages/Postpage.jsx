@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router";
 import axios from "axios";
-import "./postPage.css";
+import "./postpage.css";
 import NavBar from "../components/navbar.jsx";
 import API_BASE_URL from "../config/config.js";
 
