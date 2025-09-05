@@ -5,7 +5,7 @@ import Feed from "../components/feed.jsx";
 import axios from "axios";
 import Sidebar from "../components/sidebar.jsx";
 import API_BASE_URL from "../config/config.js";
-import "./Home.css";
+import "./home.css";
 
 function Homepage() {
   const [posts, setPosts] = useState([]);

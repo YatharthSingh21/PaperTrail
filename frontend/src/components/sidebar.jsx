@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import API_BASE_URL from "../config/config.js";
-import "./Sidebar.css";
+import "./sidebar.css";
 
 const topArticleImg =
   "https://tse3.mm.bing.net/th/id/OIP.YBSexRNJNdNJ5V8eSS3ZDgHaDt?r=0&cb=ucfimg2&pid=Api&ucfimg=1";

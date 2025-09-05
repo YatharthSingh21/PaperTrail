@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router";
-import './NavBar.css';
+import './navBar.css';
 import logo from "../assets/logo.png";
 import '@fortawesome/fontawesome-free/css/all.css';
 
